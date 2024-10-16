@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Encoder/Decoder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+        }
+        #output {
+            margin-top: 20px;
+            background-color: #e2e2e2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Base64 Encoder/Decoder</h1>
+
+<h3>Decode Base64</h3>
+<textarea id="base64Input" placeholder="Enter Base64 encoded string here..."></textarea>
+<button id="decodeButton">Decode</button>
+
+<h3>Modify and Encode</h3>
+<textarea id="jsonOutput" placeholder="Decoded JSON will appear here..." readonly></textarea>
+<button id="encodeButton">Encode Modified JSON</button>
+
+<h3>Encoded Output</h3>
+<div id="encodedOutput"></div>
+
+<script>
+    // Function to decode a Base64 string
+    function decodeBase64(encodedStr) {
+        const decodedStr = atob(encodedStr);
+        const jsonData = JSON.parse(decodedStr);
+        return jsonData;
+    }
+
+    // Function to encode an object into a Base64 string
+    function encodeBase64(data) {
+        const jsonString = JSON.stringify(data);
+        const encodedStr = btoa(jsonString);
+        return encodedStr;
+    }
+
+    // Event listener for the decode button
+    document.getElementById("decodeButton").addEventListener("click", function() {
+        const inputStr = document.getElementById("base64Input").value;
+        try {
+            const decodedData = decodeBase64(inputStr);
+            document.getElementById("jsonOutput").value = JSON.stringify(decodedData, null, 2);
+        } catch (error) {
+            alert("Invalid Base64 string");
+        }
+    });
+
+    // Event listener for the encode button
+    document.getElementById("encodeButton").addEventListener("click", function() {
+        const outputStr = document.getElementById("jsonOutput").value;
+        try {
+            const jsonData = JSON.parse(outputStr);
+            const newEncodedString = encodeBase64(jsonData);
+            document.getElementById("encodedOutput").innerText = newEncodedString;
+        } catch (error) {
+            alert("Invalid JSON");
+        }
+    });
+</script>
+
+</body>
+</html>
